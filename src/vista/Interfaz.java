@@ -7,7 +7,10 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import javax.swing.GroupLayout;
+import javax.swing.JFileChooser;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -27,6 +30,11 @@ public class Interfaz extends JFrame {
 	private JTable table;
 	private JTextField txtIdfield;
 	private JTextField txtGenerofield;
+	private JTextField txtNombrefield;
+	private JTextField txtApellidosfield;
+	private JTextField txtPaisfield;
+	private JTextField txtDinerofield;
+	private JMenuItem mntmAbrir;
 
 	/**
 	 * Launch the application.
@@ -88,11 +96,6 @@ public class Interfaz extends JFrame {
 		JMenuItem mntmMostrarAyuda = new JMenuItem("Mostrar ayuda");
 		mnAyuda.add(mntmMostrarAyuda);
 		
-		JPanel panelEstado = new JPanel();
-		
-		JLabel lblEstado = new JLabel("PRUEBA");
-		panelEstado.add(lblEstado);
-		
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
@@ -106,21 +109,17 @@ public class Interfaz extends JFrame {
 		panelNorte.add(scrollPane);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(panelEstado, GroupLayout.PREFERRED_SIZE, 434, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(splitPane, GroupLayout.PREFERRED_SIZE, 434, GroupLayout.PREFERRED_SIZE)
+					.addComponent(splitPane, GroupLayout.PREFERRED_SIZE, 444, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(splitPane, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)
-					.addGap(225)
-					.addComponent(panelEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addComponent(splitPane, GroupLayout.PREFERRED_SIZE, 420, GroupLayout.PREFERRED_SIZE)
+					.addGap(35))
 		);
 		
 		JPanel panelSur = new JPanel();
@@ -137,51 +136,134 @@ public class Interfaz extends JFrame {
 		
 		txtGenerofield = new JTextField();
 		txtGenerofield.setColumns(10);
+		
+		JLabel lblNombre = new JLabel("Nombre");
+		
+		txtNombrefield = new JTextField();
+		txtNombrefield.setColumns(10);
+		
+		JLabel lblApellidos = new JLabel("Apellidos");
+		
+		txtApellidosfield = new JTextField();
+		txtApellidosfield.setColumns(10);
+		
+		JLabel lblPais = new JLabel("Pais");
+		
+		txtPaisfield = new JTextField();
+		txtPaisfield.setColumns(10);
+		
+		JLabel lblDinero = new JLabel("Dinero");
+		
+		txtDinerofield = new JTextField();
+		txtDinerofield.setColumns(10);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(5)
-					.addComponent(lblId)
-					.addGap(5)
-					.addComponent(txtIdfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(5)
-					.addComponent(lblGenero)
-					.addGap(5)
-					.addComponent(txtGenerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblPais)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(txtPaisfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(lblDinero)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtDinerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblNombre)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtNombrefield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(lblApellidos)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(txtApellidosfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblId)
+							.addGap(5)
+							.addComponent(txtIdfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(lblGenero)
+							.addGap(5)
+							.addComponent(txtGenerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(37))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(8)
-					.addComponent(lblId))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(5)
-					.addComponent(txtIdfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(8)
-					.addComponent(lblGenero))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(5)
-					.addComponent(txtGenerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(8)
+							.addComponent(lblGenero))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(5)
+							.addComponent(txtGenerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(8)
+									.addComponent(lblId))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(5)
+									.addComponent(txtIdfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addGap(18)
+							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblNombre)
+								.addComponent(txtNombrefield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblApellidos)
+								.addComponent(txtApellidosfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addGap(18)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblPais)
+							.addComponent(txtPaisfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblDinero)
+							.addComponent(txtDinerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(58, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
+		
+		JPanel panelEstado = new JPanel();
+		
+		JLabel lblEstado = new JLabel("PRUEBA");
+		panelEstado.add(lblEstado);
 		GroupLayout gl_panelSur = new GroupLayout(panelSur);
 		gl_panelSur.setHorizontalGroup(
 			gl_panelSur.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panelSur.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(panelEstado, GroupLayout.PREFERRED_SIZE, 434, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 				.addGroup(gl_panelSur.createSequentialGroup()
-					.addGap(97)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 406, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(28, Short.MAX_VALUE))
 		);
 		gl_panelSur.setVerticalGroup(
 			gl_panelSur.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelSur.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_panelSur.createSequentialGroup()
 					.addGap(5)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+					.addComponent(panelEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		panelSur.setLayout(gl_panelSur);
 		getContentPane().setLayout(groupLayout);
 		
+		/*getMntmAbrir().addActionListener(l->{
+			//FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
+			JFileChooser fC = new JFileChooser();
+			fC.setFileFilter(filter);
+			int seleccion = fC.showOpenDialog(getMntmAbrir());
+			
+			
+		});*/
 		
+	}
+	
+	public JMenuItem getMntmAbrir() {
+		return mntmAbrir;
 	}
 }
