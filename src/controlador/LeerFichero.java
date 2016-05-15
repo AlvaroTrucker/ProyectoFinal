@@ -1,6 +1,8 @@
 package controlador;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,23 +19,29 @@ public class LeerFichero {
 	public void leerFichero(File file){
 		try (JsonReader jReader = new JsonReader(new FileReader(file));){
 			jReader.beginArray();
-			int id = 0;
+			//int id = 0;
 			String nombre = "";
 			String apellidos = "";
 			String genero = "";
 			String pais = "";
-			double dinero = 0.0;
+			//double dinero = 0.0;
 			
 			while (jReader.hasNext()){
 				jReader.beginObject();
-				if (jReader.nextName().equals("id")) jReader.nextInt();
-				if (jReader.nextName().equals("nombre")) nombre = jReader.nextString();
-				if (jReader.nextName().equals("apellidos"))apellidos = jReader.nextString();
-				if (jReader.nextName().equals("genero")) genero = jReader.nextString();
-				if (jReader.nextName().equals("pais")) pais = jReader.nextString();
-				if (jReader.nextName().equals("dinero")) dinero = jReader.nextDouble();
+				/*if (jReader.nextName().equals("ID"))
+					id = jReader.nextInt();*/
+				if (jReader.nextName().equals("Genero"))
+					genero = jReader.nextString();
+				if (jReader.nextName().equals("Nombre"))
+					nombre = jReader.nextString();
+				if (jReader.nextName().equals("Apellidos"))
+					apellidos = jReader.nextString();
+				if (jReader.nextName().equals("Pais"))
+					pais = jReader.nextString();
+				/*if (jReader.nextName().equals("Dinero")) 
+					dinero = jReader.nextDouble();*/
 				
-				lista.add(new Persona(id, nombre, apellidos, genero, pais, dinero));
+				lista.add(new Persona(nombre, apellidos, genero, pais));
 				jReader.endObject();
 			}
 			jReader.endArray();

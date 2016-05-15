@@ -9,6 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controlador.Controlador;
+import controlador.LeerFichero;
+import controlador.Tabla;
+
 import javax.swing.GroupLayout;
 import javax.swing.JFileChooser;
 import javax.swing.GroupLayout.Alignment;
@@ -24,6 +28,9 @@ import javax.swing.Box;
 import java.awt.Component;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.awt.event.ActionEvent;
 
 public class Interfaz extends JFrame {
 	private JFrame frame;
@@ -35,6 +42,10 @@ public class Interfaz extends JFrame {
 	private JTextField txtPaisfield;
 	private JTextField txtDinerofield;
 	private JMenuItem mntmAbrir;
+	private JLabel lblEstado;
+	
+	private File fichero;
+	private LeerFichero fichero1 = null;
 
 	/**
 	 * Launch the application.
@@ -51,11 +62,16 @@ public class Interfaz extends JFrame {
 			}
 		});
 	}
+	
+	public Interfaz(){
+		initialize();
+		Controlador controlador = new Controlador(this);
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Interfaz() {
+	public void initialize() {
 		frame = new JFrame();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
@@ -67,6 +83,23 @@ public class Interfaz extends JFrame {
 		menuBar.add(mnArchivo);
 		
 		JMenuItem mntmAbrir = new JMenuItem("Abrir");
+		mntmAbrir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
+				JFileChooser fC = new JFileChooser();
+				fC.setFileFilter(filter);
+				int seleccion = fC.showOpenDialog(getMntmAbrir());
+				if (seleccion == JFileChooser.APPROVE_OPTION){
+					fichero = fC.getSelectedFile();
+					fichero1 = new LeerFichero();
+					fichero1.leerFichero(fichero);
+					getTable().setModel(new Tabla(fichero1.getLista()));
+				}			
+				if (seleccion == JFileChooser.CANCEL_OPTION){
+					getLblEstado().setText("No hay fichero cargado");
+				}
+			}
+		});
 		mnArchivo.add(mntmAbrir);
 		
 		JMenu mnRegistro = new JMenu("Registro");
@@ -263,7 +296,21 @@ public class Interfaz extends JFrame {
 		
 	}
 	
+	public JFrame getFrame() {
+		return frame;
+	}
+	
 	public JMenuItem getMntmAbrir() {
 		return mntmAbrir;
 	}
+	
+	public JTable getTable() {
+		return table;
+	}
+	
+	public JLabel getLblEstado() {
+		return lblEstado;
+	}
+	
+	
 }

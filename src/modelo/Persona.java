@@ -2,28 +2,17 @@ package modelo;
 
 public class Persona {
 	//atributos
-	private int id;
 	private String nombre;
 	private String apellidos;
 	private String genero;
 	private String pais;
-	private double dinero;
 	
-	public Persona(int id, String nombre, String apellidos, String genero, String pais, double dinero) {
-		this.id = id;
+	public Persona(String nombre, String apellidos, String genero, String pais) {
+		super();
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.genero = genero;
 		this.pais = pais;
-		this.dinero = dinero;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getNombre() {
@@ -57,13 +46,9 @@ public class Persona {
 	public void setPais(String pais) {
 		this.pais = pais;
 	}
-
-	public double getDinero() {
-		return dinero;
-	}
-
-	public void setDinero(double dinero) {
-		this.dinero = dinero;
-	}
+	
+	
+	
+	
 	
 }

@@ -11,7 +11,7 @@ public class Lista {
 		List<String> cadenas = new ArrayList<String>();
 		for (int i=0; i<lista.size(); i++){
 			Persona persona = (Persona) lista.get(i);
-			for (int j=0; j<6; j++){
+			for (int j=0; j<4; j++){
 				switch (j){
 				case 0:
 					cadenas.add(persona.getNombre());

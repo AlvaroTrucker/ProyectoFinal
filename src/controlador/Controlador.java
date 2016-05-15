@@ -17,7 +17,7 @@ public class Controlador {
 	
 	public Controlador(Interfaz interfaz){
 		this.interfaz = interfaz;
-		inicializar();
+		//inicializar();
 	}
 	
 	public void inicializar(){
@@ -33,7 +33,7 @@ public class Controlador {
 				//interfaz.getTabla().setModel(new Tabla(fichero1.getLista()));
 			}			
 			if (seleccion == JFileChooser.CANCEL_OPTION){
-				//interfaz.getLblEstado().setText("No hay fichero cargado");
+				interfaz.getLblEstado().setText("No hay fichero cargado");
 			}
 			
 		});
