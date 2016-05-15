@@ -31,6 +31,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Interfaz extends JFrame {
 	private JFrame frame;
@@ -46,6 +48,8 @@ public class Interfaz extends JFrame {
 	
 	private File fichero;
 	private LeerFichero fichero1 = null;
+	private int indice = 0;
+	private boolean modificar = true;
 
 	/**
 	 * Launch the application.
@@ -136,6 +140,12 @@ public class Interfaz extends JFrame {
 		splitPane.setLeftComponent(panelNorte);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				rellenarFormulario(indice);
+			}
+		});
 		panelNorte.add(table);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -259,7 +269,7 @@ public class Interfaz extends JFrame {
 		
 		JPanel panelEstado = new JPanel();
 		
-		JLabel lblEstado = new JLabel("PRUEBA");
+		JLabel lblEstado = new JLabel("Barra de estado");
 		panelEstado.add(lblEstado);
 		GroupLayout gl_panelSur = new GroupLayout(panelSur);
 		gl_panelSur.setHorizontalGroup(
@@ -310,6 +320,47 @@ public class Interfaz extends JFrame {
 	
 	public JLabel getLblEstado() {
 		return lblEstado;
+	}
+	
+	public JTextField getNombre() {
+		return txtNombrefield;
+	}
+
+	public void setNombre(JTextField txtNombrefield) {
+		this.txtNombrefield = txtNombrefield;
+	}
+	
+	public JTextField getApellidos() {
+		return txtApellidosfield;
+	}
+
+	public void setApellidos(JTextField txtApellidosfield) {
+		this.txtApellidosfield = txtApellidosfield;
+	}
+	
+	public JTextField getGenero() {
+		return txtGenerofield;
+	}
+
+	public void setGenero(JTextField txtGenerofield) {
+		this.txtGenerofield = txtGenerofield;
+	}
+	
+	public JTextField getPais() {
+		return txtPaisfield;
+	}
+
+	public void setPais(JTextField txtPaisfield) {
+		this.txtPaisfield = txtPaisfield;
+	}
+	
+	private void rellenarFormulario(int indice){
+		modificar = true;
+		getNombre().setText(fichero1.getLista().get(indice).getNombre());
+		getApellidos().setText(fichero1.getLista().get(indice).getApellidos()+"");
+		getGenero().setText(fichero1.getLista().get(indice).getGenero()+"");
+		getPais().setText(fichero1.getLista().get(indice).getPais()+"");
+		String cadena = "Registro "+indice+" de "+fichero1.getLista().size();
 	}
 	
 	

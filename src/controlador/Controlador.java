@@ -1,7 +1,14 @@
 package controlador;
 
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -12,31 +19,17 @@ import vista.Interfaz;
 
 public class Controlador {
 	private Interfaz interfaz;
-	private File fichero;
 	private LeerFichero fichero1 = null;
+	private int indice = 0;
+	private boolean modificar = true;
 	
 	public Controlador(Interfaz interfaz){
 		this.interfaz = interfaz;
-		//inicializar();
+		inicializar();
 	}
 	
 	public void inicializar(){
-		interfaz.getMntmAbrir().addActionListener(l->{
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
-			JFileChooser fC = new JFileChooser();
-			fC.setFileFilter(filter);
-			int seleccion = fC.showOpenDialog(interfaz.getMntmAbrir());
-			if (seleccion == JFileChooser.APPROVE_OPTION){
-				fichero = fC.getSelectedFile();
-				fichero1 = new LeerFichero();
-				fichero1.leerFichero(fichero);
-				//interfaz.getTabla().setModel(new Tabla(fichero1.getLista()));
-			}			
-			if (seleccion == JFileChooser.CANCEL_OPTION){
-				interfaz.getLblEstado().setText("No hay fichero cargado");
-			}
-			
-		});
+		
 	}
 	
 }
