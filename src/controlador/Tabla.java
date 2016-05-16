@@ -8,7 +8,7 @@ import modelo.Persona;
 
 public class Tabla extends AbstractTableModel{
 	
-	private static final String[] CABECERA = {"ID","Nombre","Apellidos","Genero","Pais","Dinero"};
+	private static final String[] CABECERA = {"Nombre","Apellidos","Genero","Pais"};
 	private String[][] array;
 	
 	public Tabla(List<Persona> lista) {

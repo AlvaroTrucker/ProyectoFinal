@@ -1,11 +1,11 @@
 import java.awt.EventQueue;
 
-import controlador.Controlador;
+//import controlador.Controlador;
 import vista.Interfaz;
 
 public class TestPersona {
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		
 		Controlador controlador = new Controlador(new Interfaz());
 
@@ -20,6 +20,6 @@ public class TestPersona {
 			}
 		});
 		
-	}
+	}*/
 
 }

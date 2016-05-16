@@ -17,17 +17,13 @@ public class LeerFichero {
 	public void leerFichero(File file){
 		try (JsonReader jReader = new JsonReader(new FileReader(file));){
 			jReader.beginArray();
-			//int id = 0;
-			String nombre = "";
-			String apellidos = "";
-			String genero = "";
-			String pais = "";
-			//double dinero = 0.0;
+			String nombre = " ";
+			String apellidos = " ";
+			String genero = " ";
+			String pais = " ";
 			
 			while (jReader.hasNext()){
 				jReader.beginObject();
-				/*if (jReader.nextName().equals("ID"))
-					id = jReader.nextInt();*/
 				if (jReader.nextName().equals("Genero"))
 					genero = jReader.nextString();
 				if (jReader.nextName().equals("Nombre"))
@@ -36,8 +32,6 @@ public class LeerFichero {
 					apellidos = jReader.nextString();
 				if (jReader.nextName().equals("Pais"))
 					pais = jReader.nextString();
-				/*if (jReader.nextName().equals("Dinero")) 
-					dinero = jReader.nextDouble();*/
 				
 				lista.add(new Persona(nombre, apellidos, genero, pais));
 				jReader.endObject();

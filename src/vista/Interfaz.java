@@ -1,17 +1,16 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import controlador.Controlador;
+
 import controlador.LeerFichero;
 import controlador.Tabla;
+import modelo.Persona;
 
 import javax.swing.GroupLayout;
 import javax.swing.JFileChooser;
@@ -19,13 +18,11 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import javax.swing.Box;
-import java.awt.Component;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
@@ -33,23 +30,23 @@ import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
 
 public class Interfaz extends JFrame {
 	private JFrame frame;
 	private JTable table;
-	private JTextField txtIdfield;
 	private JTextField txtGenerofield;
 	private JTextField txtNombrefield;
 	private JTextField txtApellidosfield;
 	private JTextField txtPaisfield;
-	private JTextField txtDinerofield;
 	private JMenuItem mntmAbrir;
 	private JLabel lblEstado;
+	private JMenuItem siguiente;
 	
 	private File fichero;
 	private LeerFichero fichero1 = null;
-	private int indice = 0;
-	private boolean modificar = true;
+	private int indice = 99;
+	private boolean modificar = false;
 
 	/**
 	 * Launch the application.
@@ -69,7 +66,7 @@ public class Interfaz extends JFrame {
 	
 	public Interfaz(){
 		initialize();
-		Controlador controlador = new Controlador(this);
+		//Controlador controlador = new Controlador(this);
 	}
 
 	/**
@@ -110,15 +107,55 @@ public class Interfaz extends JFrame {
 		menuBar.add(mnRegistro);
 		
 		JMenuItem mntmAnterior = new JMenuItem("Anterior");
+		mntmAnterior.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (indice!=0){
+					indice -= 1;
+					rellenarFormulario(indice);
+				} else {
+					getLblEstado().setText("No tiene cargado ningÃºn archivo");
+				}
+			}
+		});
 		mnRegistro.add(mntmAnterior);
 		
 		JMenuItem mntmSiguiente = new JMenuItem("Siguiente");
+		mntmSiguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(indice != 0 || indice == 0){
+					indice += 1;
+					rellenarFormulario(indice);
+				}
+			}
+		});
 		mnRegistro.add(mntmSiguiente);
 		
 		JMenuItem mntmNuevo = new JMenuItem("Nuevo");
+		mntmNuevo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getNombre().setText("");
+				getApellidos().setText("");
+				getGenero().setText("");
+				getPais().setText("");
+				modificar = false;
+			}
+		});
 		mnRegistro.add(mntmNuevo);
 		
 		JMenuItem mntmEliminar = new JMenuItem("Eliminar");
+		mntmEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String texto = "¿Desea borrar "+ fichero1.getLista().get(indice).getNombre() + "?";
+				if(fichero1!=null){
+					if (confirmar(texto)==0){
+						fichero1.getLista().remove(fichero1.getLista().get(indice));
+						getTable().setModel(new Tabla(fichero1.getLista()));
+					}
+				} else if (fichero1 == null) {
+					getLblEstado().setText("No tiene cargado ningun archivo");
+				}
+			}
+		});
 		mnRegistro.add(mntmEliminar);
 		
 		JMenu mnInforme = new JMenu("Informe");
@@ -137,6 +174,8 @@ public class Interfaz extends JFrame {
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		JPanel panelNorte = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelNorte.getLayout();
+		flowLayout.setVgap(90);
 		splitPane.setLeftComponent(panelNorte);
 		
 		table = new JTable();
@@ -170,11 +209,6 @@ public class Interfaz extends JFrame {
 		
 		JPanel panel = new JPanel();
 		
-		JLabel lblId = new JLabel("ID");
-		
-		txtIdfield = new JTextField();
-		txtIdfield.setColumns(10);
-		
 		JLabel lblGenero = new JLabel("Genero");
 		
 		txtGenerofield = new JTextField();
@@ -195,75 +229,64 @@ public class Interfaz extends JFrame {
 		txtPaisfield = new JTextField();
 		txtPaisfield.setColumns(10);
 		
-		JLabel lblDinero = new JLabel("Dinero");
-		
-		txtDinerofield = new JTextField();
-		txtDinerofield.setColumns(10);
+		JButton btnAnadir = new JButton("A\u00F1adir registro");
+		btnAnadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Persona persona = new Persona(getNombre().getText(), getApellidos().getText(), getGenero().getText(), getPais().getText());
+				fichero1.getLista().add(persona);
+				getTable().setModel(new Tabla(fichero1.getLista()));
+			}
+		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(5)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblPais)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(txtPaisfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(lblDinero)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtDinerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblNombre)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtNombrefield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(lblApellidos)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(txtApellidosfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(txtNombrefield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblId)
-							.addGap(5)
-							.addComponent(txtIdfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(5)
 							.addComponent(lblGenero)
-							.addGap(5)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(txtGenerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(37))
+					.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblApellidos)
+							.addGap(18)
+							.addComponent(txtApellidosfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+							.addComponent(lblPais)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(txtPaisfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(36))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap(165, Short.MAX_VALUE)
+					.addComponent(btnAnadir)
+					.addGap(152))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(8)
-							.addComponent(lblGenero))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(5)
-							.addComponent(txtGenerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(8)
-									.addComponent(lblId))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(5)
-									.addComponent(txtIdfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-							.addGap(18)
-							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNombre)
-								.addComponent(txtNombrefield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblApellidos)
-								.addComponent(txtApellidosfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addGap(43)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNombre)
+						.addComponent(txtApellidosfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblApellidos)
+						.addComponent(txtNombrefield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblPais)
-							.addComponent(txtPaisfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblGenero)
+							.addComponent(txtGenerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblDinero)
-							.addComponent(txtDinerofield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(58, Short.MAX_VALUE))
+							.addComponent(txtPaisfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblPais)))
+					.addPreferredGap(ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+					.addComponent(btnAnadir)
+					.addContainerGap())
 		);
 		panel.setLayout(gl_panel);
 		
@@ -354,14 +377,21 @@ public class Interfaz extends JFrame {
 		this.txtPaisfield = txtPaisfield;
 	}
 	
+	public JMenuItem getSiguiente() {
+		return siguiente;
+	}
+	
 	private void rellenarFormulario(int indice){
 		modificar = true;
 		getNombre().setText(fichero1.getLista().get(indice).getNombre());
-		getApellidos().setText(fichero1.getLista().get(indice).getApellidos()+"");
-		getGenero().setText(fichero1.getLista().get(indice).getGenero()+"");
-		getPais().setText(fichero1.getLista().get(indice).getPais()+"");
+		getApellidos().setText(fichero1.getLista().get(indice).getApellidos());
+		getGenero().setText(fichero1.getLista().get(indice).getGenero());
+		getPais().setText(fichero1.getLista().get(indice).getPais());
 		String cadena = "Registro "+indice+" de "+fichero1.getLista().size();
 	}
 	
-	
+	private int confirmar(String texto){
+		int seleccion = JOptionPane.showOptionDialog(getFrame(), texto , "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] {"Si", "No"}, "No");
+		return seleccion;
+	}
 }
