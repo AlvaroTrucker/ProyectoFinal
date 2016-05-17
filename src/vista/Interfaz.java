@@ -7,7 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
+import controlador.CrearPDF;
+import controlador.ExtensionPDF;
 import controlador.LeerFichero;
 import controlador.Tabla;
 import modelo.Persona;
@@ -27,6 +28,8 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -45,7 +48,7 @@ public class Interfaz extends JFrame {
 	
 	private File fichero;
 	private LeerFichero fichero1 = null;
-	private int indice = 99;
+	private int indice = 0;
 	private boolean modificar = false;
 
 	/**
@@ -162,13 +165,43 @@ public class Interfaz extends JFrame {
 		menuBar.add(mnInforme);
 		
 		JMenuItem mntmGenerarPdf = new JMenuItem("Generar PDF");
+		mntmGenerarPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String texto = "¿Desea generar informe con los elementos seleccionados?";
+				if (fichero1!=null){
+					if (confirmar(texto)==0){
+						FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos PDF", "pdf");
+						JFileChooser jFPDF = new JFileChooser();
+						jFPDF.setFileFilter(filtro);
+						int seleccionSave = jFPDF.showSaveDialog(null);
+						if (seleccionSave == JFileChooser.APPROVE_OPTION){
+							List<Persona> lista = new ArrayList<Persona>();
+							int[] arraySeleccion = getTable().getSelectedRows();
+							for (int i = 0; i < arraySeleccion.length; i++ ){
+								lista.add(fichero1.getLista().get(arraySeleccion[i]));
+							}
+							CrearPDF.crearPDF(lista, ExtensionPDF.obtenerExtension(jFPDF));
+						}
+					} 
+				} else getLblEstado().setText("No tiene cargado ningÃºn archivo");
+			}
+		});
 		mnInforme.add(mntmGenerarPdf);
 		
 		JMenu mnAyuda = new JMenu("Ayuda");
 		menuBar.add(mnAyuda);
 		
-		JMenuItem mntmMostrarAyuda = new JMenuItem("Mostrar ayuda");
-		mnAyuda.add(mntmMostrarAyuda);
+		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de...");
+		mntmAcercaDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(getFrame(),"Aplicación personas del mundo\n"
+						+ "Proyecto realizado en el módulo de Programación de 1ºDAM (IES Virgen del Carmen)\n"
+						+ "Hecho por Álvaro Jiménez Jiménez"
+						+ "\nInicio 10/05/2016\n"
+						+ "¿Final? 26/05/2016","Acerca de...",JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		mnAyuda.add(mntmAcercaDe);
 		
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -317,16 +350,6 @@ public class Interfaz extends JFrame {
 		);
 		panelSur.setLayout(gl_panelSur);
 		getContentPane().setLayout(groupLayout);
-		
-		/*getMntmAbrir().addActionListener(l->{
-			//FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
-			JFileChooser fC = new JFileChooser();
-			fC.setFileFilter(filter);
-			int seleccion = fC.showOpenDialog(getMntmAbrir());
-			
-			
-		});*/
-		
 	}
 	
 	public JFrame getFrame() {
