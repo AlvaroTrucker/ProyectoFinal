@@ -7,8 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controlador.CrearTablas;
+
+import controlador.ConexionBBDD;
 import controlador.CrearPDF;
 import controlador.ExtensionPDF;
+import controlador.InsertarPersonas;
 import controlador.LeerFichero;
 import controlador.Tabla;
 import modelo.Persona;
@@ -28,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -50,6 +55,8 @@ public class Interfaz extends JFrame {
 	private LeerFichero fichero1 = null;
 	private int indice = 0;
 	private boolean modificar = false;
+	
+	private Connection conexion;
 
 	/**
 	 * Launch the application.
@@ -68,6 +75,7 @@ public class Interfaz extends JFrame {
 	}
 	
 	public Interfaz(){
+		conexion = ConexionBBDD.getConexion();
 		initialize();
 		//Controlador controlador = new Controlador(this);
 	}
@@ -98,6 +106,8 @@ public class Interfaz extends JFrame {
 					fichero1 = new LeerFichero();
 					fichero1.leerFichero(fichero);
 					getTable().setModel(new Tabla(fichero1.getLista()));
+					CrearTablas.crearTablaPersona(conexion);
+					InsertarPersonas.insertarListaPersonas(conexion, fichero1.getLista());
 				}			
 				if (seleccion == JFileChooser.CANCEL_OPTION){
 					getLblEstado().setText("No hay fichero cargado");
