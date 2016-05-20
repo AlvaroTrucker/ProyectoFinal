@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
-import modelo.Persona;
+import modelo.PersonaDTO;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -15,7 +15,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class CrearPDF {
 	
-	public static void crearPDF(List<Persona> lista, File archivo){
+	public static void crearPDF(List<PersonaDTO> lista, File archivo){
 		try {
 			Document documento = new Document();
 			PdfWriter.getInstance(documento, new FileOutputStream(archivo));
@@ -49,7 +49,7 @@ public class CrearPDF {
 			envolturaFilaCabecera.add(filaCabecera);
 			documento.add(new Paragraph(envolturaFilaCabecera));
 			
-			for (Persona persona : lista) {				
+			for (PersonaDTO persona : lista) {				
 				texto.add(persona.getNombre());
 				PdfPCell celdaNombre = new PdfPCell();
 				celdaNombre.addElement(texto);

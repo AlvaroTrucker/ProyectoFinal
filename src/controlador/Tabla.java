@@ -4,14 +4,14 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import modelo.Persona;
+import modelo.PersonaDTO;
 
 public class Tabla extends AbstractTableModel{
 	
 	private static final String[] CABECERA = {"Nombre","Apellidos","Genero","Pais"};
 	private String[][] array;
 	
-	public Tabla(List<Persona> lista) {
+	public Tabla(List<PersonaDTO> lista) {
 		 array = Lista.getLista(lista);
 	}
 

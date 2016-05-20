@@ -8,11 +8,11 @@ import java.util.List;
 
 import com.google.gson.stream.JsonReader;
 
-import modelo.Persona;
+import modelo.PersonaDTO;
 
 public class LeerFichero {
 	
-	private List<Persona> lista = new ArrayList<Persona>();
+	private List<PersonaDTO> lista = new ArrayList<PersonaDTO>();
 
 	public void leerFichero(File file){
 		try (JsonReader jReader = new JsonReader(new FileReader(file));){
@@ -33,7 +33,7 @@ public class LeerFichero {
 				if (jReader.nextName().equals("Pais"))
 					pais = jReader.nextString();
 				
-				lista.add(new Persona(nombre, apellidos, genero, pais));
+				lista.add(new PersonaDTO(nombre, apellidos, genero, pais));
 				jReader.endObject();
 			}
 			jReader.endArray();
@@ -43,7 +43,7 @@ public class LeerFichero {
 		} catch (IOException e) {
 			e.printStackTrace();}
 		}
-	public List<Persona> getLista() {
+	public List<PersonaDTO> getLista() {
 		return lista;
 	}
 }

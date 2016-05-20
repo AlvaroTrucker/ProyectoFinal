@@ -8,14 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controlador.CrearTablas;
-
 import controlador.ConexionBBDD;
 import controlador.CrearPDF;
 import controlador.ExtensionPDF;
 import controlador.InsertarPersonas;
 import controlador.LeerFichero;
 import controlador.Tabla;
-import modelo.Persona;
+
+import modelo.PersonaDTO;
 
 import javax.swing.GroupLayout;
 import javax.swing.JFileChooser;
@@ -84,7 +84,7 @@ public class Interfaz extends JFrame {
 	 * Create the frame.
 	 */
 	public void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("Aplicacion personas del mundo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
 		
@@ -108,6 +108,7 @@ public class Interfaz extends JFrame {
 					getTable().setModel(new Tabla(fichero1.getLista()));
 					CrearTablas.crearTablaPersona(conexion);
 					InsertarPersonas.insertarListaPersonas(conexion, fichero1.getLista());
+					//PersonaDAOImp.
 				}			
 				if (seleccion == JFileChooser.CANCEL_OPTION){
 					getLblEstado().setText("No hay fichero cargado");
@@ -158,7 +159,7 @@ public class Interfaz extends JFrame {
 		JMenuItem mntmEliminar = new JMenuItem("Eliminar");
 		mntmEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String texto = "¿Desea borrar "+ fichero1.getLista().get(indice).getNombre() + "?";
+				String texto = "ï¿½Desea borrar "+ fichero1.getLista().get(indice).getNombre() + "?";
 				if(fichero1!=null){
 					if (confirmar(texto)==0){
 						fichero1.getLista().remove(fichero1.getLista().get(indice));
@@ -177,7 +178,7 @@ public class Interfaz extends JFrame {
 		JMenuItem mntmGenerarPdf = new JMenuItem("Generar PDF");
 		mntmGenerarPdf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String texto = "¿Desea generar informe con los elementos seleccionados?";
+				String texto = "ï¿½Desea generar informe con los elementos seleccionados?";
 				if (fichero1!=null){
 					if (confirmar(texto)==0){
 						FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos PDF", "pdf");
@@ -185,7 +186,7 @@ public class Interfaz extends JFrame {
 						jFPDF.setFileFilter(filtro);
 						int seleccionSave = jFPDF.showSaveDialog(null);
 						if (seleccionSave == JFileChooser.APPROVE_OPTION){
-							List<Persona> lista = new ArrayList<Persona>();
+							List<PersonaDTO> lista = new ArrayList<PersonaDTO>();
 							int[] arraySeleccion = getTable().getSelectedRows();
 							for (int i = 0; i < arraySeleccion.length; i++ ){
 								lista.add(fichero1.getLista().get(arraySeleccion[i]));
@@ -204,11 +205,11 @@ public class Interfaz extends JFrame {
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de...");
 		mntmAcercaDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(getFrame(),"Aplicación personas del mundo\n"
-						+ "Proyecto realizado en el módulo de Programación de 1ºDAM (IES Virgen del Carmen)\n"
-						+ "Hecho por Álvaro Jiménez Jiménez"
+				JOptionPane.showMessageDialog(getFrame(),"Aplicaciï¿½n personas del mundo\n"
+						+ "Proyecto realizado en el mï¿½dulo de Programaciï¿½n de 1ï¿½DAM (IES Virgen del Carmen)\n"
+						+ "Hecho por ï¿½lvaro Jimï¿½nez Jimï¿½nez"
 						+ "\nInicio 10/05/2016\n"
-						+ "¿Final? 26/05/2016","Acerca de...",JOptionPane.PLAIN_MESSAGE);
+						+ "ï¿½Final? 26/05/2016","Acerca de...",JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		mnAyuda.add(mntmAcercaDe);
@@ -275,7 +276,7 @@ public class Interfaz extends JFrame {
 		JButton btnAnadir = new JButton("A\u00F1adir registro");
 		btnAnadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Persona persona = new Persona(getNombre().getText(), getApellidos().getText(), getGenero().getText(), getPais().getText());
+				PersonaDTO persona = new PersonaDTO(getNombre().getText(), getApellidos().getText(), getGenero().getText(), getPais().getText());
 				fichero1.getLista().add(persona);
 				getTable().setModel(new Tabla(fichero1.getLista()));
 			}

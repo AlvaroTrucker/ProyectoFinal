@@ -5,14 +5,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import modelo.Persona;
+import modelo.PersonaDTO;
 
 public class InsertarPersonas {
 	
 	private static Statement sentencia;
-	public static void insertarListaPersonas(Connection con, List<Persona> lista){
+	public static void insertarListaPersonas(Connection con, List<PersonaDTO> lista){
 		String sql = "";
-		for (Persona persona : lista) {
+		for (PersonaDTO persona : lista) {
 			sql = "INSERT INTO PERSONA VALUES (null,'"+persona.getNombre()+"','"+persona.getApellidos()+"','"+persona.getGenero()+"','"+persona.getPais()+"')";
 			try {
 				sentencia = con.createStatement();
@@ -23,7 +23,7 @@ public class InsertarPersonas {
 		}
 	}
 	
-	public static void insertarNuevaPersona(Connection con, Persona persona){
+	public static void insertarNuevaPersona(Connection con, PersonaDTO persona){
 		String sql = "INSERT INTO PERSONA VALUES (null,'"+persona.getNombre()+"','"+persona.getApellidos()+"','"+persona.getGenero()+"','"+persona.getPais()+"')";
 		
 		try {

@@ -3,14 +3,14 @@ package controlador;
 import java.util.ArrayList;
 import java.util.List;
 
-import modelo.Persona;
+import modelo.PersonaDTO;
 
 public class Lista {
-	protected static String[][] getLista(List<Persona> lista){
+	protected static String[][] getLista(List<PersonaDTO> lista){
 		String[][] array = new String[lista.size()][lista.size()*4];
 		List<String> cadenas = new ArrayList<String>();
 		for (int i=0; i<lista.size(); i++){
-			Persona persona = (Persona) lista.get(i);
+			PersonaDTO persona = (PersonaDTO) lista.get(i);
 			for (int j=0; j<4; j++){
 				switch (j){
 				case 0:

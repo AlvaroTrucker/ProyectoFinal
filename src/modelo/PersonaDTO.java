@@ -1,13 +1,13 @@
 package modelo;
 
-public class Persona {
+public class PersonaDTO {
 	//atributos
 	private String nombre;
 	private String apellidos;
 	private String genero;
 	private String pais;
 	
-	public Persona(String nombre, String apellidos, String genero, String pais) {
+	public PersonaDTO(String nombre, String apellidos, String genero, String pais) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.genero = genero;
@@ -45,9 +45,5 @@ public class Persona {
 	public void setPais(String pais) {
 		this.pais = pais;
 	}
-	
-	
-	
-	
 	
 }
