@@ -13,6 +13,7 @@ import controlador.CrearPDF;
 import controlador.ExtensionPDF;
 import controlador.InsertarPersonas;
 import controlador.LeerFichero;
+import controlador.PersonaDAOImp;
 import controlador.Tabla;
 
 import modelo.PersonaDTO;
@@ -57,6 +58,8 @@ public class Interfaz extends JFrame {
 	private boolean modificar = false;
 	
 	private Connection conexion;
+	
+	PersonaDAOImp jSQLite = new PersonaDAOImp();
 
 	/**
 	 * Launch the application.
@@ -79,11 +82,19 @@ public class Interfaz extends JFrame {
 		initialize();
 		//Controlador controlador = new Controlador(this);
 	}
+	
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public void initialize() {
+		
+		/*if (new File("personas.db").exists()){
+			getMntmAbrir().setEnabled(false);
+			getTable().setModel(new Tabla(jSQLite.leerTodasPersonas()));
+		}*/
+		
 		frame = new JFrame("Aplicacion personas del mundo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
@@ -108,7 +119,6 @@ public class Interfaz extends JFrame {
 					getTable().setModel(new Tabla(fichero1.getLista()));
 					CrearTablas.crearTablaPersona(conexion);
 					InsertarPersonas.insertarListaPersonas(conexion, fichero1.getLista());
-					//PersonaDAOImp.
 				}			
 				if (seleccion == JFileChooser.CANCEL_OPTION){
 					getLblEstado().setText("No hay fichero cargado");
@@ -222,6 +232,9 @@ public class Interfaz extends JFrame {
 		flowLayout.setVgap(90);
 		splitPane.setLeftComponent(panelNorte);
 		
+		JScrollPane scrollPane = new JScrollPane(table);
+		panelNorte.add(scrollPane);
+		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -230,9 +243,6 @@ public class Interfaz extends JFrame {
 			}
 		});
 		panelNorte.add(table);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		panelNorte.add(scrollPane);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -273,12 +283,14 @@ public class Interfaz extends JFrame {
 		txtPaisfield = new JTextField();
 		txtPaisfield.setColumns(10);
 		
-		JButton btnAnadir = new JButton("A\u00F1adir registro");
+		JButton btnAnadir = new JButton("Guardar registro");
 		btnAnadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PersonaDTO persona = new PersonaDTO(getNombre().getText(), getApellidos().getText(), getGenero().getText(), getPais().getText());
-				fichero1.getLista().add(persona);
-				getTable().setModel(new Tabla(fichero1.getLista()));
+				//fichero1.getLista().add(persona);
+				//getTable().setModel(new Tabla(fichero1.getLista()));
+				jSQLite.insertarPersonaDTO(persona);
+				getTable().setModel(new Tabla(jSQLite.leerTodasPersonas()));
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
