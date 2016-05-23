@@ -19,9 +19,9 @@ public class PersonaDAOImp implements PersonaDAO {
 
 	@Override
 	public void insertarPersonaDTO(PersonaDTO p) {
-		sql = "INSERT INTO PERSONA VALUES (null,'"+p.getNombre()+"','"+p.getApellidos()+"','"+p.getGenero()+"','"+p.getPais()+"')";
 		try {
 			sentencia = conexion.createStatement();
+			sql = "INSERT INTO PERSONA VALUES (null,'"+p.getNombre()+"','"+p.getApellidos()+"','"+p.getGenero()+"','"+p.getPais()+"')";
 			sentencia.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -82,7 +82,7 @@ public class PersonaDAOImp implements PersonaDAO {
 		ColeccionPersonas.getLista().clear();
 		try {
 			sentencia = conexion.createStatement();
-			String sql = "SELECT * FROM PERSONA";
+			String sql = "SELECT * FROM persona";
 			ResultSet resultado = sentencia.executeQuery(sql);
 			while(resultado.next()){
 					coleccion.addLista(new PersonaDTO(resultado.getString("nombre"),resultado.getString("apellidos"),resultado.getString("genero"),resultado.getString("pais")));
