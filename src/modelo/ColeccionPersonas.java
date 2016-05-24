@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import modelo.PersonaDTO;
 
 public class ColeccionPersonas {
 private static List<PersonaDTO> lista = new ArrayList<PersonaDTO>();

@@ -15,7 +15,6 @@ import controlador.InsertarPersonas;
 import controlador.LeerFichero;
 import controlador.PersonaDAOImp;
 import controlador.Tabla;
-import controlador.CrearTrigger;
 import modelo.ColeccionPersonas;
 import modelo.PersonaDTO;
 
@@ -41,6 +40,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.ListSelectionModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Interfaz extends JFrame {
 	private JFrame frame;
@@ -80,10 +82,9 @@ public class Interfaz extends JFrame {
 	
 	public Interfaz(){
 		setResizable(false);
-		setTitle("Aplicaci\u00F3n personas del mundo");
+		setTitle("Aplicacion personas del mundo");
 		conexion = ConexionBBDD.getConexion();
 		initialize();
-		//Controlador controlador = new Controlador(this);
 	}
 	
 	
@@ -92,13 +93,7 @@ public class Interfaz extends JFrame {
 	 * Create the frame.
 	 */
 	public void initialize() {
-		
-		/*if (new File("personas.db").exists()){
-			getMntmAbrir().setEnabled(false);
-			getTable().setModel(new Tabla(jSQLite.leerTodasPersonas()));
-		}*/
-		
-		frame = new JFrame("Aplicacion personas del mundo");
+		frame = new JFrame();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 513, 500);
 		
@@ -122,6 +117,7 @@ public class Interfaz extends JFrame {
 					getTable().setModel(new Tabla(fichero1.getLista()));
 					CrearTablas.crearTablaPersona(conexion);
 					InsertarPersonas.insertarListaPersonas(conexion, fichero1.getLista());
+					CrearTablas.CrearTrigger(conexion);
 				}	
 				if (seleccion == JFileChooser.CANCEL_OPTION){
 					getLblEstado().setText("No hay fichero cargado");
@@ -177,10 +173,10 @@ public class Interfaz extends JFrame {
 				String texto = "¿Quieres borrar "+ fichero1.getLista().get(indice).getNombre() + "?";
 				if(fichero1!=null){
 					if (confirmar(texto)==0){
-						CrearTrigger.trigger(conexion, ColeccionPersonas.getLista());
 						fichero1.getLista().remove(fichero1.getLista().get(indice));
-						//jSQLite.borrarPersonaDTO(ColeccionPersonas.getLista().get(indice).getNombre());
 						getTable().setModel(new Tabla(fichero1.getLista()));
+						CrearTablas.BorrarTrigger(conexion);
+						//jSQLite.borrarPersonaDTO(ColeccionPersonas.getLista().get(indice).getNombre());
 					}
 				} else if (fichero1 == null) {
 					getLblEstado().setText("No tiene cargado ningun archivo");
@@ -244,6 +240,14 @@ public class Interfaz extends JFrame {
 		panelNorte.add(scrollPane);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				indice = getTable().getSelectedRow();
+				rellenarFormulario(indice);
+			}
+		});
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		scrollPane.setViewportView(table);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -293,6 +297,7 @@ public class Interfaz extends JFrame {
 				getTable().setModel(new Tabla(fichero1.getLista()));
 				jSQLite.insertarPersonaDTO(persona);
 				getTable().setModel(new Tabla(jSQLite.leerTodasPersonas()));
+				//CrearTablas.crearVista(conexion);
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -355,25 +360,22 @@ public class Interfaz extends JFrame {
 		panelEstado.add(lblEstado);
 		GroupLayout gl_panelSur = new GroupLayout(panelSur);
 		gl_panelSur.setHorizontalGroup(
-			gl_panelSur.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_panelSur.createSequentialGroup()
+			gl_panelSur.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panelSur.createSequentialGroup()
+					.addContainerGap(39, Short.MAX_VALUE)
 					.addGroup(gl_panelSur.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panelSur.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panelEstado, GroupLayout.PREFERRED_SIZE, 406, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.LEADING, gl_panelSur.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 406, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(26, Short.MAX_VALUE))
+						.addComponent(panelEstado, GroupLayout.PREFERRED_SIZE, 406, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 406, GroupLayout.PREFERRED_SIZE))
+					.addGap(34))
 		);
 		gl_panelSur.setVerticalGroup(
-			gl_panelSur.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_panelSur.createSequentialGroup()
-					.addGap(5)
+			gl_panelSur.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panelSur.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panelEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addGap(6))
 		);
 		panelSur.setLayout(gl_panelSur);
 		getContentPane().setLayout(groupLayout);
