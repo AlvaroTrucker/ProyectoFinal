@@ -4,8 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-
 import org.sqlite.SQLiteConfig;
+
+/**
+ * Clase que realiza la conexion a la BBDD
+ * @author Alvaro Jimenez
+ * @version 1.0
+ */
 
 public class ConexionBBDD {
 	private static Connection conexion;
@@ -33,6 +38,12 @@ public class ConexionBBDD {
 		}
 		return conexion;
 	}
+	
+	/**
+	 * Clase que cierra la conexion
+	 * @author Alvaro Jimenez
+	 * @version 1.0
+	 */
 	
 	static class MiShutdown extends Thread{
 		@Override

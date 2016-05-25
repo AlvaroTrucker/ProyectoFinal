@@ -1,0 +1,27 @@
+APLICACIÓN PERSONAS DEL MUNDO
+-----------------------------
+
+1. Ejecución
+------------
+-Linux: java -jar y la ruta al jar
+-Windows: clickando directamente en el jar
+
+2. Funcionamiento
+-----------------
+-Se muestra la interfaz sin datos algunos. Pulsamos en Archivo->Abrir y buscamos datos.json que se encuentra en la carpeta datos del proyecto
+-Se carga la tabla(tarda unos 5 segundos), ahora podremos seleccionar una fila y mostrar sus datos en el formulario
+-Todos los botones del menú Registro son muy claros
+-El menú Informe contiene Generar PDF. Con los datos que tengamos seleccionados podremos crear un PDF
+-Acerca de... contiene información de la aplicación
+-El boton Guardar registro inserta los datos en la BBDD
+-La barra de estado muestra el numero de registro actual
+
+3. Lista de problemas conocidos en interfaz
+----------------------------------------
+-Se crea la tabla con su scrollPane pero no se coloca en su sitio
+-La barra de estado no muestra nada, código implementado correctamente
+
+4. Lista de problemas conocidos en BBDD
+------------------------------------
+-Java no es capaz de crear la vista, incluso escribiendo bien la sentencia
+-Al eliminar un dato no funciona borrarPersonaDTO, por tanto el trigger tampoco puede escribir datos

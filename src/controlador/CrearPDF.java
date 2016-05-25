@@ -13,6 +13,12 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+/**
+ * Clase que genera un PDF en base a los elementos seleccionados en la tabla
+ * @author Alvaro Jimenez
+ * @version 1.0
+ */
+
 public class CrearPDF {
 	
 	public static void crearPDF(List<PersonaDTO> lista, File archivo){

@@ -5,6 +5,13 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * Clase que obtiene la extension .pdf para los PDFs
+ * @author Alvaro Jimenez
+ * @version 1.0
+ *
+ */
+
 public class ExtensionPDF {
 	public static File obtenerExtension(JFileChooser jF){
 		File archivo = jF.getSelectedFile();

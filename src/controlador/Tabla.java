@@ -6,6 +6,12 @@ import javax.swing.table.AbstractTableModel;
 
 import modelo.PersonaDTO;
 
+/**
+ * Clase que crea una tabla estandar
+ * @author Alvaro Jimenez
+ * @version 1.0
+ *
+ */
 public class Tabla extends AbstractTableModel{
 	
 	private static final String[] CABECERA = {"Nombre","Apellidos","Genero","Pais"};

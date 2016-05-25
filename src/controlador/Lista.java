@@ -5,6 +5,12 @@ import java.util.List;
 
 import modelo.PersonaDTO;
 
+/**
+ * Clase que crea un array bidimensional para crear la tabla
+ * @author Alvaro Jimenez
+ * @version 1.0
+ *
+ */
 public class Lista {
 	protected static String[][] getLista(List<PersonaDTO> lista){
 		String[][] array = new String[lista.size()][lista.size()*4];

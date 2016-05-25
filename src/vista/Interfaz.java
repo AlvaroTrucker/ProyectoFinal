@@ -15,7 +15,6 @@ import controlador.InsertarPersonas;
 import controlador.LeerFichero;
 import controlador.PersonaDAOImp;
 import controlador.Tabla;
-import modelo.ColeccionPersonas;
 import modelo.PersonaDTO;
 
 import javax.swing.GroupLayout;
@@ -44,6 +43,11 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**Interfaz del programa
+ * @author Alvaro Jimenez
+ * @version 1.0
+ */
+
 public class Interfaz extends JFrame {
 	private JFrame frame;
 	private JTextField txtGenerofield;
@@ -65,7 +69,7 @@ public class Interfaz extends JFrame {
 	private JTable table;
 
 	/**
-	 * Launch the application.
+	 * main para lanzar la aplicacion
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -80,6 +84,7 @@ public class Interfaz extends JFrame {
 		});
 	}
 	
+	//metodo para realizar la conexion a la BBDD y la inicializacion de la interfaz
 	public Interfaz(){
 		setResizable(false);
 		setTitle("Aplicacion personas del mundo");
@@ -87,11 +92,6 @@ public class Interfaz extends JFrame {
 		initialize();
 	}
 	
-	
-
-	/**
-	 * Create the frame.
-	 */
 	public void initialize() {
 		frame = new JFrame();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,6 +104,9 @@ public class Interfaz extends JFrame {
 		menuBar.add(mnArchivo);
 		
 		JMenuItem mntmAbrir = new JMenuItem("Abrir");
+		
+		//metodo consistente en un fileChooser para seleccionar el JSON
+		//ademas de sacar la tabla, genera las tablas PERSONA y PAPELERA en la BBDD e inserta los datos en PERSONA
 		mntmAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos JSON", "json");
@@ -120,7 +123,7 @@ public class Interfaz extends JFrame {
 					CrearTablas.CrearTrigger(conexion);
 				}	
 				if (seleccion == JFileChooser.CANCEL_OPTION){
-					getLblEstado().setText("No hay fichero cargado");
+					getLblEstado().setText("No hay fichero cargado"); //salta una excepcion, por que?
 				}
 			}
 		});
@@ -129,6 +132,7 @@ public class Interfaz extends JFrame {
 		JMenu mnRegistro = new JMenu("Registro");
 		menuBar.add(mnRegistro);
 		
+		//metodo para retroceder en la tabla si el indice no es 0
 		JMenuItem mntmAnterior = new JMenuItem("Anterior");
 		mntmAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -136,12 +140,13 @@ public class Interfaz extends JFrame {
 					indice -= 1;
 					rellenarFormulario(indice);
 				} else {
-					getLblEstado().setText("No tiene cargado ningÃºn archivo");
+					getLblEstado().setText("No tiene cargado ningun archivo"); //excepcion
 				}
 			}
 		});
 		mnRegistro.add(mntmAnterior);
 		
+		//metodo para avanzar en la tabla siempre y cuando no se este en el ultimo registro
 		JMenuItem mntmSiguiente = new JMenuItem("Siguiente");
 		mntmSiguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -154,6 +159,8 @@ public class Interfaz extends JFrame {
 		mnRegistro.add(mntmSiguiente);
 		
 		JMenuItem mntmNuevo = new JMenuItem("Nuevo");
+		
+		//metodo que borra los datos para insertar un nuevo registro
 		mntmNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getNombre().setText("");
@@ -168,6 +175,9 @@ public class Interfaz extends JFrame {
 		JMenuItem mntmEliminar = new JMenuItem("Eliminar");
 		mntmEliminar.setForeground(Color.RED);
 		mntmEliminar.setBackground(Color.WHITE);
+		
+		//metodo que borra un registro en la tabla y en la BBDD
+		//la linea de borrarPersonaDTO esta comentada porque salta excepcion
 		mntmEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String texto = "¿Quieres borrar "+ fichero1.getLista().get(indice).getNombre() + "?";
@@ -179,7 +189,7 @@ public class Interfaz extends JFrame {
 						//jSQLite.borrarPersonaDTO(ColeccionPersonas.getLista().get(indice).getNombre());
 					}
 				} else if (fichero1 == null) {
-					getLblEstado().setText("No tiene cargado ningun archivo");
+					getLblEstado().setText("No tiene cargado ningun archivo"); //excepcion
 				}
 			}
 		});
@@ -189,6 +199,9 @@ public class Interfaz extends JFrame {
 		menuBar.add(mnInforme);
 		
 		JMenuItem mntmGenerarPdf = new JMenuItem("Generar PDF");
+		
+		//metodo para generar un PDF con los elementos que esten seleccionados
+		//en caso de no seleccionar nada solo muestra la cabecera
 		mntmGenerarPdf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String texto = "¿Quieres generar informe con los elementos seleccionados?";
@@ -207,7 +220,7 @@ public class Interfaz extends JFrame {
 							CrearPDF.crearPDF(lista, ExtensionPDF.obtenerExtension(jFPDF));
 						}
 					} 
-				} else getLblEstado().setText("No tiene cargado ningÃºn archivo");
+				} else getLblEstado().setText("No tiene cargado ningun archivo"); //excepcion
 			}
 		});
 		mnInforme.add(mntmGenerarPdf);
@@ -216,6 +229,8 @@ public class Interfaz extends JFrame {
 		menuBar.add(mnAyuda);
 		
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de...");
+		
+		//metodo para mostrar informacion relevante del proyecto
 		mntmAcercaDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(getFrame(),"Aplicacion personas del mundo\n"
@@ -240,6 +255,8 @@ public class Interfaz extends JFrame {
 		panelNorte.add(scrollPane);
 		
 		table = new JTable();
+		
+		//metodo que permite mostrar los datos de una persona en base a la fila que tengamos seleccionada
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -290,6 +307,10 @@ public class Interfaz extends JFrame {
 		txtPaisfield.setColumns(10);
 		
 		JButton btnAnadir = new JButton("Guardar registro");
+		
+		//metodo para guardar un dato una vez pulsado el boton
+		//la linea de crearVista esta comentada porque no es relevante crearla, ademas da un error de sentencia
+		//SQL, aun teniendola bien hecha
 		btnAnadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PersonaDTO persona = new PersonaDTO(getNombre().getText(), getApellidos().getText(), getGenero().getText(), getPais().getText());
@@ -381,6 +402,8 @@ public class Interfaz extends JFrame {
 		getContentPane().setLayout(groupLayout);
 	}
 	
+	//getters y setters
+	
 	public JFrame getFrame() {
 		return frame;
 	}
@@ -433,6 +456,7 @@ public class Interfaz extends JFrame {
 		return siguiente;
 	}
 	
+	//metodo para obtener los datos de una fila y mostrarlos en el formulario
 	private void rellenarFormulario(int indice){
 		modificar = true;
 		getNombre().setText(fichero1.getLista().get(indice).getNombre());
@@ -440,9 +464,10 @@ public class Interfaz extends JFrame {
 		getGenero().setText(fichero1.getLista().get(indice).getGenero());
 		getPais().setText(fichero1.getLista().get(indice).getPais());
 		String cadena = "Registro "+indice+" de "+fichero1.getLista().size();
-		getLblEstado().setText(cadena);
+		getLblEstado().setText(cadena); //excepcion
 	}
 	
+	//metodo para las ventanas de Eliminar y Crear PDF
 	private int confirmar(String texto){
 		int seleccion = JOptionPane.showOptionDialog(getFrame(), texto , "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] {"Si", "No"}, "No");
 		return seleccion;

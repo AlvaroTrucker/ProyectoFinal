@@ -10,6 +10,13 @@ import java.util.List;
 import modelo.ColeccionPersonas;
 import modelo.PersonaDTO;
 
+
+/**
+ * Clase que implementa los metodos de PersonaDAO
+ * @author Alvaro Jimenez
+ * @version 1.0
+ *
+ */
 public class PersonaDAOImp implements PersonaDAO {
 	private Connection conexion = ConexionBBDD.getConexion();
 	private static Statement sentencia;
@@ -17,6 +24,7 @@ public class PersonaDAOImp implements PersonaDAO {
 	private String sql;
 	private static ColeccionPersonas coleccion = new ColeccionPersonas();
 
+	//metodo que inserta datos en la BBDD
 	@Override
 	public void insertarPersonaDTO(PersonaDTO p) {
 		try {
@@ -35,6 +43,8 @@ public class PersonaDAOImp implements PersonaDAO {
 		
 	}
 	
+	//metodo para actualizar datos en la BBDD
+	//actualmente no se esta usando en el proyecto
 	@Override
 	public int actualizarPersonaDTO(PersonaDTO p, int indice) {
 		sql = "UPDATE PERSONA SET NOMBRE=?, APELLIDOS=?, GENERO=?, PAIS=? WHERE ID=?";
@@ -61,6 +71,8 @@ public class PersonaDAOImp implements PersonaDAO {
 		
 	}
 
+	//metodo que borra datos de la BBDD
+	//implementado pero no funciona en la interfaz
 	@Override
 	public int borrarPersonaDTO(String nombre) {
 		sql = "DELETE FROM PERSONA WHERE NOMBRE=?";
@@ -77,6 +89,7 @@ public class PersonaDAOImp implements PersonaDAO {
 		return valor;
 	}
 
+	//metodo que devuelve todos los registros de la BBDD
 	@Override
 	public List<PersonaDTO> leerTodasPersonas() {
 		ColeccionPersonas.getLista().clear();

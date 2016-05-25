@@ -7,6 +7,14 @@ import java.util.List;
 
 import modelo.PersonaDTO;
 
+/**
+ * Clase antigüa para insertar personas en la BBDD
+ * En su lugar se usa la del DAO
+ * @author Alvaro Jimenez
+ * @version 1.0
+ *
+ */
+
 public class InsertarPersonas {
 	
 	private static Statement sentencia;
@@ -23,6 +31,7 @@ public class InsertarPersonas {
 		}
 	}
 	
+	//metodo para insertar una persona al pulsar el boton Guardar registro
 	public static void insertarNuevaPersona(Connection con, PersonaDTO persona){
 		String sql = "INSERT INTO PERSONA VALUES (null,'"+persona.getNombre()+"','"+persona.getApellidos()+"','"+persona.getGenero()+"','"+persona.getPais()+"')";
 		

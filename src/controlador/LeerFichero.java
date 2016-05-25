@@ -10,6 +10,12 @@ import com.google.gson.stream.JsonReader;
 
 import modelo.PersonaDTO;
 
+/**
+ * Clase que lee el fichero JSON
+ * @author Alvaro Jimenez
+ * @version 1.0
+ *
+ */
 public class LeerFichero {
 	
 	private List<PersonaDTO> lista = new ArrayList<PersonaDTO>();

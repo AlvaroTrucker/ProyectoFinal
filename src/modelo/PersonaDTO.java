@@ -1,5 +1,10 @@
 package modelo;
 
+/**Clase Persona que contiene los atributos, constructor, getters/setters, hasCode, equals y toString
+ * @author Alvaro Jimenez
+ * @version 1.0
+ */
+
 public class PersonaDTO {
 	//atributos
 	private String nombre;
@@ -7,6 +12,13 @@ public class PersonaDTO {
 	private String genero;
 	private String pais;
 	
+	/**
+	 * 
+	 * @param nombre Nombre de la persona
+	 * @param apellidos Apellidos de la persona
+	 * @param genero Hombre o Mujer
+	 * @param pais Pais de origen
+	 */
 	public PersonaDTO(String nombre, String apellidos, String genero, String pais) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;

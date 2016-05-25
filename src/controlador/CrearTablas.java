@@ -7,6 +7,12 @@ import java.util.List;
 
 import modelo.PersonaDTO;
 
+/**
+ * Clase que genera las tablas, triggers y vistas
+ * @author Alvaro Jimenez
+ * @version 1.0
+ * 
+ */
 public class CrearTablas {
 	private static Statement sentencia;
 	public static void crearTablaPersona(Connection con){
@@ -33,7 +39,6 @@ public class CrearTablas {
 			sentencia.addBatch(sql);
 			sentencia.executeBatch();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
